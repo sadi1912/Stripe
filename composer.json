@@ -1,0 +1,14 @@
+{
+    "name": "cakephp/app",
+    "description": "CakePHP skeleton app",
+    "homepage": "http://cakephp.org",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "stripe/stripe-php": "^4.7"
+    },
+    "require-dev": {
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

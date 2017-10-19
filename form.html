@@ -1,0 +1,40 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="application/javascript" src="https://checkout.stripe.com/checkout.js"></script>
+<form action="" method="POST" id="payment-form">
+    <input style="width: 100px; float: right;" class="form-control" type="number" id="custom-donation-amount" placeholder="$50.00" min="0" step="5.00"/>
+    <input type="hidden" id="stripeToken" name="stripeToken"/>
+    <input class="donate-desc" style="width: 100%; float: right;" class="form-control" type="text" name="description" placeholder="What is this donation for?"/>
+    <input type="submit" style="float: left; margin-right: 10px;" id="customButton" class="simpay-payment-btn stripe-button-el"><span>Make a Donation</span></button>
+</form>
+<script>
+    var amount = 0;
+    var desc = '';
+
+    var handler = StripeCheckout.configure({
+        key: 'pk_test_P4imLv0RdjzeljeQNl1BcOY5',
+        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+        token: function (token) {
+            var myData = {
+                stripeToken: token.id,
+                email: token.email,
+                amount: amount,
+                description: desc
+            };
+            jQuery.post('charge.php', myData, function (response) {
+                console.log(response);
+            });
+        }
+    });
+
+    document.getElementById('customButton').addEventListener('click', function (e) {
+        // This line is the only real modification...
+        amount = jQuery("#custom-donation-amount").val() * 100;
+        desc = jQuery('.donate-desc').val();
+        handler.open({
+            name: 'donate',
+            description: desc,
+            amount: Math.round(amount)
+        });
+        e.preventDefault();
+    });
+</script>
